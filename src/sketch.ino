@@ -55,15 +55,46 @@ void setup()
   Serial.begin(9600);
 }
 
+void vinga() {
+  // N 57 38 O 11 36    Fl (2) 30 s
+  int modTime = time % 30000;
+
+  if (modTime < 700) {
+    writeFixedColor(WHITE);
+  } else if (modTime < 1700) {
+    writeFixedColor(BLACK);
+  } else if (modTime < 2400) {
+    writeFixedColor(WHITE);
+  } else {
+    writeFixedColor(BLACK);
+  }
+
+}
+
 // See http://sv.wikipedia.org/wiki/Fyrkarakt%C3%A4r
 // http://fyr.org/ehfyrvst.htm
-void vinga_ostra_nedre() {
+void vinga_ostra() {
+  // N 57 38,0 O 11 36,7   Oc R 4s nedre
+  // N 57 37,9 O 11 36,4   Oc R 4s ovre
+  
   int modTime = time % 4000;
 
   if (modTime < 500) {
     writeFixedColor(BLACK);
   } else {
+    writeFixedColor(RED);
+  }
+}
+
+void kanso() {
+  // N 57-37.5 O 11-44.7   Iso WRG 3s
+
+  int modTime = time % 3000;
+
+  if (modTime < 1500) {
     writeFixedColor(WHITE);
+  } else {
+    writeFixedColor(BLACK);
   }
 }
 
@@ -81,8 +112,29 @@ void tistlarna() {
   }
 }
 
-void loop()
-{
+
+void nidingen() {
+  // N 57 18 O 11 54   Fl (1+2) 27 s 
+  int modTime = time % 27000;
+
+  if (modTime < 700) {
+    writeFixedColor(WHITE);
+  } else if (modTime < 13000) {
+    writeFixedColor(BLACK);
+  } else if (modTime < 13700) {
+    writeFixedColor(WHITE);
+  } else if (modTime < 14200) {
+    writeFixedColor(BLACK);
+  } else if (modTime < 14900) {
+    writeFixedColor(WHITE);
+  } else {
+    writeFixedColor(BLACK);
+  }
+}
+  
+
+
+void loop() {
   toggleBtn();
 
   if (Serial.available() > 0) {
@@ -92,12 +144,18 @@ void loop()
 
   time = millis();
 
-  if (command == "VINGA_OSTRA_NEDRE") {
-    vinga_ostra_nedre();
+  if (command == "VINGA_OSTRA") {
+    vinga_ostra();
+  } else if (command == "VINGA") {
+    vinga();
+  } else if (command == "KANSO") {
+    kanso();
   } else if (command == "TISTLARNA") {
     tistlarna();
+  } else if (command == "NIDINGEN") {
+    nidingen();
   } else {
     writeColor(0,0,0);
   }
 
-}
+ }
